@@ -1,0 +1,11 @@
+{
+  "domain": "diun_updates",
+  "name": "Diun Container Updates",
+  "version": "1.0.0",
+  "documentation": "https://github.com/PiperNigrum/hacs_diun_update_notification",
+  "dependencies": [],
+  "codeowners": ["@PiperNigrum"],
+  "requirements": [],
+  "config_flow": true,
+  "iot_class": "local_push"
+}

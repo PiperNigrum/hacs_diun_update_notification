@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Diun Container Updates einrichten",
+        "description": "Trage die Namen deiner Docker-Container ein (kommagetrennt).\nBeispiel: homeassistant, portainer, nginx",
+        "data": {
+          "containers": "Container-Namen (kommagetrennt)"
+        }
+      }
+    },
+    "error": {
+      "no_containers": "Bitte mindestens einen Container-Namen eingeben."
+    },
+    "abort": {
+      "already_configured": "Diun Updates ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Container-Liste bearbeiten",
+        "description": "Container hinzufügen oder entfernen (kommagetrennt).",
+        "data": {
+          "containers": "Container-Namen (kommagetrennt)"
+        }
+      }
+    },
+    "error": {
+      "no_containers": "Bitte mindestens einen Container-Namen eingeben."
+    }
+  }
+}
