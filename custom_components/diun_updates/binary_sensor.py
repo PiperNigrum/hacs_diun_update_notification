@@ -8,7 +8,7 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback, Event
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
@@ -34,15 +34,11 @@ async def async_setup_entry(
 
 class DiunUpdateSensor(RestoreEntity, BinarySensorEntity):
     """
-    A binary sensor representing a Docker container with a pending update.
+    Binary sensor for a Docker container with a pending diun update.
 
-    State is writable via the standard Home Assistant services:
-      - homeassistant.turn_on   â marks update available  (state: on)
-      - homeassistant.turn_off  â clears update            (state: off)
-      - homeassistant.toggle    â toggles state
-
-    Use these in your diun webhook automation to set the correct sensor.
-    Entity ID pattern: binary_sensor.diun_update_<container_name>
+    Controlled via the integration's own services:
+      - diun_updates.set   container: <name>   → on
+      - diun_updates.clear container: <name>   → off
     """
 
     _attr_device_class = BinarySensorDeviceClass.UPDATE
@@ -54,48 +50,30 @@ class DiunUpdateSensor(RestoreEntity, BinarySensorEntity):
         self._attr_name = f"Diun Update {container_name}"
         self._attr_unique_id = f"{DOMAIN}_{entry_id}_{container_name}"
 
-    # ------------------------------------------------------------------
-    # RestoreEntity â persist state across restarts
-    # ------------------------------------------------------------------
-
     async def async_added_to_hass(self) -> None:
-        """Restore last known state on startup."""
+        """Restore state and subscribe to set_state events."""
         await super().async_added_to_hass()
+
+        # Restore last known state across restarts
         last_state = await self.async_get_last_state()
         if last_state is not None:
             self._attr_is_on = last_state.state == "on"
             _LOGGER.debug(
-                "diun_updates: Restored '%s' â %s",
+                "diun_updates: Restored '%s' → %s",
                 self._container_name,
                 self._attr_is_on,
             )
 
-    # ------------------------------------------------------------------
-    # Make the entity writable so HA's built-in toggle services work
-    # ------------------------------------------------------------------
+        # Listen for state-change events fired by the services in __init__.py
+        @callback
+        def _handle_set_state(event: Event) -> None:
+            if event.data.get("entity_id") == self.entity_id:
+                self._attr_is_on = event.data.get("state", False)
+                self.async_write_ha_state()
 
-    @property
-    def is_on(self) -> bool:
-        return self._attr_is_on
-
-    async def async_turn_on(self, **kwargs) -> None:
-        """Mark update as available."""
-        self._attr_is_on = True
-        self.async_write_ha_state()
-
-    async def async_turn_off(self, **kwargs) -> None:
-        """Clear the update flag."""
-        self._attr_is_on = False
-        self.async_write_ha_state()
-
-    async def async_toggle(self, **kwargs) -> None:
-        """Toggle update flag."""
-        self._attr_is_on = not self._attr_is_on
-        self.async_write_ha_state()
-
-    # ------------------------------------------------------------------
-    # Extra attributes
-    # ------------------------------------------------------------------
+        self.async_on_remove(
+            self.hass.bus.async_listen(f"{DOMAIN}_set_state", _handle_set_state)
+        )
 
     @property
     def extra_state_attributes(self) -> dict:

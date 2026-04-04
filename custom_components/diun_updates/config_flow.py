@@ -77,7 +77,7 @@ class DiunUpdatesOptionsFlow(config_entries.OptionsFlow):
             if not containers:
                 errors[CONF_CONTAINERS] = "no_containers"
             else:
-                # Saving into options triggers the update_listener â reload
+                # Saving into options triggers the update_listener → reload
                 return self.async_create_entry(
                     title="",
                     data={CONF_CONTAINERS: containers},

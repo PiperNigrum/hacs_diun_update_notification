@@ -1,0 +1,23 @@
+turn_on:
+  name: Update verfügbar markieren (turn_on)
+  description: Setzt den Update-Sensor eines Containers auf true.
+  fields:
+    container:
+      name: Container-Name
+      description: Name des Docker-Containers (muss in der Integration konfiguriert sein).
+      required: true
+      example: "homeassistant"
+      selector:
+        text:
+
+turn_off:
+  name: Update zurücksetzen (turn_off)
+  description: Setzt den Update-Sensor eines Containers zurück auf false.
+  fields:
+    container:
+      name: Container-Name
+      description: Name des Docker-Containers (muss in der Integration konfiguriert sein).
+      required: true
+      example: "homeassistant"
+      selector:
+        text:
