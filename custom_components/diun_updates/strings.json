@@ -3,14 +3,15 @@
     "step": {
       "user": {
         "title": "Diun Container Updates einrichten",
-        "description": "Trage die Namen deiner Docker-Container ein (kommagetrennt).\nBeispiel: homeassistant, portainer, nginx",
+        "description": "Wähle die Container aus deiner Portainer-Integration aus, die überwacht werden sollen. Container, die nicht über Portainer laufen, kannst du zusätzlich manuell (kommagetrennt) eintragen.",
         "data": {
-          "containers": "Container-Namen (kommagetrennt)"
+          "portainer_devices": "Container aus Portainer",
+          "extra_containers": "Weitere Container-Namen (kommagetrennt)"
         }
       }
     },
     "error": {
-      "no_containers": "Bitte mindestens einen Container-Namen eingeben."
+      "no_containers": "Bitte mindestens einen Container auswählen oder eintragen."
     },
     "abort": {
       "already_configured": "Diun Updates ist bereits eingerichtet."
@@ -19,15 +20,16 @@
   "options": {
     "step": {
       "init": {
-        "title": "Container-Liste bearbeiten",
-        "description": "Container hinzufügen oder entfernen (kommagetrennt).",
+        "title": "Container-Auswahl bearbeiten",
+        "description": "Container aus Portainer hinzufügen/entfernen oder weitere Container-Namen manuell pflegen.",
         "data": {
-          "containers": "Container-Namen (kommagetrennt)"
+          "portainer_devices": "Container aus Portainer",
+          "extra_containers": "Weitere Container-Namen (kommagetrennt)"
         }
       }
     },
     "error": {
-      "no_containers": "Bitte mindestens einen Container-Namen eingeben."
+      "no_containers": "Bitte mindestens einen Container auswählen oder eintragen."
     }
   }
 }
