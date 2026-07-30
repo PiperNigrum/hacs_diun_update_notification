@@ -1,7 +1,7 @@
 {
   "domain": "diun_updates",
   "name": "Diun Container Updates",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "documentation": "https://github.com/PiperNigrum/hacs_diun_update_notification",
   "dependencies": [],
   "codeowners": [
