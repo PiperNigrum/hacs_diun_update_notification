@@ -7,7 +7,6 @@ from homeassistant.components.update import UpdateEntity, UpdateEntityFeature
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.restore_state import RestoreEntity
 
 from .const import (
     CONF_CONTAINERS,
@@ -36,7 +35,7 @@ async def async_setup_entry(
     )
 
 
-class DiunUpdateEntity(RestoreEntity, UpdateEntity):
+class DiunUpdateEntity(UpdateEntity):
     """
     Update entity for a Docker container with a pending diun update.
 
@@ -51,6 +50,11 @@ class DiunUpdateEntity(RestoreEntity, UpdateEntity):
 
     Klick auf "Install" installiert nichts selbst, sondern feuert nur
     diun_updates_install_requested, damit eine separate Automation reagieren kann.
+
+    Hinweis: UpdateEntity bringt in aktuellen HA-Versionen die Restore-Logik
+    (inkl. async_get_last_state()) bereits selbst mit - ein zusätzliches
+    Erben von RestoreEntity führt zu einem MRO-Konflikt und darf hier NICHT
+    ergänzt werden.
     """
 
     _attr_should_poll = False
