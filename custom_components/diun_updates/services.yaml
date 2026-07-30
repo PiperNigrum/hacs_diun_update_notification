@@ -1,6 +1,6 @@
-turn_on:
-  name: Update verfügbar markieren (turn_on)
-  description: Setzt den Update-Sensor eines Containers auf true.
+set_update:
+  name: Update verfügbar setzen (set_update)
+  description: Markiert ein von Diun gemeldetes Container-Image als aktualisierbar.
   fields:
     container:
       name: Container-Name
@@ -9,15 +9,48 @@ turn_on:
       example: "homeassistant"
       selector:
         text:
+    latest_version:
+      name: Neue Version
+      description: Von Diun gemeldeter neuer Image-Tag/Digest (optional, falls verfügbar).
+      required: false
+      example: "1.4.2"
+      selector:
+        text:
+    installed_version:
+      name: Aktuelle Version
+      description: Aktuell laufender Image-Tag/Digest (optional, falls verfügbar).
+      required: false
+      example: "1.4.1"
+      selector:
+        text:
+    release_url:
+      name: Release-Link
+      description: Link zum Release/Registry-Eintrag (optional).
+      required: false
+      selector:
+        text:
+    release_summary:
+      name: Beschreibung
+      description: Kurzer Hinweistext zum Update (optional).
+      required: false
+      selector:
+        text:
 
-turn_off:
-  name: Update zurücksetzen (turn_off)
-  description: Setzt den Update-Sensor eines Containers zurück auf false.
+clear_update:
+  name: Update zurücksetzen (clear_update)
+  description: Setzt den Update-Status eines Containers zurück (Quittierung nach ausgeführtem Update).
   fields:
     container:
       name: Container-Name
       description: Name des Docker-Containers (muss in der Integration konfiguriert sein).
       required: true
       example: "homeassistant"
+      selector:
+        text:
+    installed_version:
+      name: Neu installierte Version
+      description: Optional – die tatsächlich installierte Version. Falls leer, wird "latest" gesetzt.
+      required: false
+      example: "1.4.2"
       selector:
         text:

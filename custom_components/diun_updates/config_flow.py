@@ -27,7 +27,6 @@ class DiunUpdatesConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
         """Show the setup form."""
         errors = {}
-
         if user_input is not None:
             containers = _parse_containers(user_input[CONF_CONTAINERS])
             if not containers:
@@ -65,13 +64,11 @@ class DiunUpdatesOptionsFlow(config_entries.OptionsFlow):
 
     async def async_step_init(self, user_input=None):
         errors = {}
-
         # options override data when present (set by a previous options save)
         current = self._config_entry.options.get(
             CONF_CONTAINERS,
             self._config_entry.data.get(CONF_CONTAINERS, []),
         )
-
         if user_input is not None:
             containers = _parse_containers(user_input[CONF_CONTAINERS])
             if not containers:
